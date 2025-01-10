@@ -43,10 +43,10 @@ do
     ./01_scripts/02_format_usage_data_for_figures.py "$OUTPUT_FOLDER"/overwatch_data_"$now".csv "$OUTPUT_FOLDER"/overwatch_figure.data
 
     # Produce figure
-    ./01_scripts/03_overwatch_figures.R "$OUTPUT_FOLDER"/overwatch_figure.data "$FIGURE_FOLDER"/overwatch_figure.pdf
+    ./01_scripts/03_overwatch_figures.R "$OUTPUT_FOLDER"/overwatch_figure.data "$FIGURE_FOLDER"/overwatch_figure"$SERVER".pdf
 
     # Rsync to other computer
-    rsync -avhP "$FIGURE_FOLDER"/overwatch_figure.pdf "$REMOTE"
+    rsync -avhP "$FIGURE_FOLDER"/overwatch_figure"$SERVER".pdf "$REMOTE"
 
     # Wait before next iteration
     sleep "$LOOP_DELAY"
