@@ -41,7 +41,7 @@ pdf(output_file, width=12, height=6)
       theme(legend.key.width = unit(6, "line")) +
       xlab("Time") +
       ylab("BETTER   <-----------      Unused RAM in Gb      ----------->   WORSE") +
-      scale_y_continuous(trans='log10', limits=c(18, 2000),
+      scale_y_continuous(trans='log10', limits=c(8, 1500),
                          breaks=c(1, 2, 3, 4, 5, 7,
                                   10, 20, 30, 40, 50, 70,
                                   100, 200, 300, 400, 500, 700, 1000, 2000),
