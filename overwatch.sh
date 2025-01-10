@@ -22,28 +22,28 @@ now=$(date +%Y-%m-%d_%Hh%Mm%Ss)
 while true
 do
     # Get user and reserved RAM data from SLURM
-    sq | grep " R " | grep -v "gpu" | awk '{print $5","$11}' > .overwatch_data.01
+    sq | grep " R " | grep -v "gpu" | awk '{print $5","$11}' > .overwatch_data_"$(hostname)".01
 
     # Get actual usage from top
-    cat .overwatch_data.01 |
+    cat .overwatch_data_"$(hostname)".01 |
         cut -d ',' -f 1 |
         sort -u |
         while read user
         do
             top -b -u "$user" -n 1 |
-                grep "$user" |
-                awk '{print $2","$6}'
-        done > .overwatch_data.02
+            grep "$user" |
+            awk '{print $2","$6}'
+        done > .overwatch_data_"$(hostname)".02
 
     # Compute total reserved and used RAM
-    ./01_scripts/01_get_ram_usage_per_user.py .overwatch_data.01 .overwatch_data.02 \
-        >> "$OUTPUT_FOLDER"/overwatch_data_"$now".csv
+    ./01_scripts/01_get_ram_usage_per_user.py .overwatch_data_"$(hostname)".01 .overwatch_data_"$(hostname)".02 \
+        >> "$OUTPUT_FOLDER"/overwatch_data_"$now"_"$(hostname)".csv
 
     # Prepare data
-    ./01_scripts/02_format_usage_data_for_figures.py "$OUTPUT_FOLDER"/overwatch_data_"$now".csv "$OUTPUT_FOLDER"/overwatch_figure.data
+    ./01_scripts/02_format_usage_data_for_figures.py "$OUTPUT_FOLDER"/overwatch_data_"$now"_"$(hostname)".csv "$OUTPUT_FOLDER"/overwatch_figure_"$(hostname)".data
 
     # Produce figure
-    ./01_scripts/03_overwatch_figures.R "$OUTPUT_FOLDER"/overwatch_figure.data "$FIGURE_FOLDER"/overwatch_figure_"$(hostname)".pdf
+    ./01_scripts/03_overwatch_figures.R "$OUTPUT_FOLDER"/overwatch_figure_"$(hostname)".data "$FIGURE_FOLDER"/overwatch_figure_"$(hostname)".pdf
 
     # Rsync to other computer
     rsync -avhP "$FIGURE_FOLDER"/overwatch_figure_"$(hostname)".pdf "$REMOTE"
