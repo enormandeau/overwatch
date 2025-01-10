@@ -46,7 +46,7 @@ do
     ./01_scripts/03_overwatch_figures.R "$OUTPUT_FOLDER"/overwatch_figure.data "$FIGURE_FOLDER"/overwatch_figure"$SERVER".pdf
 
     # Rsync to other computer
-    rsync -avhP "$FIGURE_FOLDER"/overwatch_figure"$SERVER".pdf "$REMOTE"
+    rsync -avhP "$FIGURE_FOLDER"/overwatch_figure_"$(hostname)".pdf "$REMOTE"
 
     # Wait before next iteration
     sleep "$LOOP_DELAY"
