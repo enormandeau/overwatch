@@ -91,6 +91,6 @@ for user in sorted(ram_reserved):
     unused = reserved - used if used < reserved else 0
     percent = 100 * used / reserved
 
-    # Only consider jobs above 10Go
-    if reserved >= 10:
+    # Only consider jobs above 5Go
+    if reserved >= 5:
         print(f"{date},{user},{reserved:.3f},{used:.3f},{unused:.3f},{percent:.3f}")

@@ -35,16 +35,17 @@ ram_usage$User = factor(ram_usage$User, levels=pull(wanted_users, User))
 subset = ram_usage[ram_usage$User %in% wanted_users$User, ]
 
 # Produce figure
-pdf(output_file, width=12, height=6)
-    ggplot(subset, aes(x=Time, y=Unused, group=Usergroup, color=User, linetype=User)) + 
-      geom_line(linewidth=1, alpha=0.8) +
-      theme(legend.key.width = unit(6, "line")) +
+pdf(output_file, width=18, height=6)
+    ggplot(subset, aes(x=Time, y=Unused, group=Usergroup, color=User)) + #, linetype=User)) + 
+      geom_line(linewidth=1.2, alpha=0.8) +
       xlab("Time") +
       ylab("BETTER   <-----------      Unused RAM in Gb      ----------->   WORSE") +
-      scale_y_continuous(trans='log10', limits=c(10, 1500),
-                         breaks=c(1, 2, 3, 4, 5, 7,
-                                  10, 20, 30, 40, 50, 70,
-                                  100, 200, 300, 400, 500, 700, 1000, 2000),
+      scale_y_continuous(trans='log10', #limits=c(10, 2000),
+                         breaks=c(1, 2, 3, 5, 7,
+                                  10, 15, 20, 30, 40, 50, 70,
+                                  100, 150, 200, 300, 400, 500, 700,
+                                  1000, 1500, 2000, 3000),
                          minor_breaks=c()) +
-      theme_bw()
+      theme_bw() +
+      theme(legend.key.width = unit(2, "cm"))
 dev.off()
