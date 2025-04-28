@@ -59,7 +59,7 @@ pdf(output_file, width=18, height=6)
       #                   minor_breaks=c()) +
 
       # Linear scale
-      scale_y_continuous(limits=c(max(20, min(subset$Unused)), min(2000, max(subset$Unused)))) +
+      scale_y_continuous() +
       theme_bw() +
       theme(legend.key.width = unit(2, "cm"))
 dev.off()
