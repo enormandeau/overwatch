@@ -21,10 +21,19 @@ names(ram_usage) = c("Time", "User", "Usergroup", "Reserved", "Used", "Unused", 
 ram_usage$Time = as.POSIXct(ram_usage$Time, format="%Y-%m-%dT%H:%M:%S")
 
 # Select wanted users
+# Order by sum of usage
+#wanted_users = ram_usage %>%
+#  group_by(., User) %>%
+#  summarise(., total=sum(Unused)) %>%
+#  arrange(., desc(total)) %>%
+#  top_n(., num_users) %>%
+#  select(User)
+
+# Order by max usage
 wanted_users = ram_usage %>%
   group_by(., User) %>%
-  summarise(., total=sum(Unused)) %>%
-  arrange(., desc(total)) %>%
+  summarise(., maximum=max(Unused)) %>%
+  arrange(., desc(maximum)) %>%
   top_n(., num_users) %>%
   select(User)
 
@@ -37,15 +46,20 @@ subset = ram_usage[ram_usage$User %in% wanted_users$User, ]
 # Produce figure
 pdf(output_file, width=18, height=6)
     ggplot(subset, aes(x=Time, y=Unused, group=Usergroup, color=User)) + #, linetype=User)) + 
-      geom_line(linewidth=1.2, alpha=0.8) +
+      geom_line(linewidth=1.0, alpha=0.6) +
       xlab("Time") +
       ylab("BETTER   <-----------      Unused RAM in Gb      ----------->   WORSE") +
-      scale_y_continuous(trans='log10', #limits=c(10, 2000),
-                         breaks=c(1, 2, 3, 5, 7,
-                                  10, 15, 20, 30, 40, 50, 70,
-                                  100, 150, 200, 300, 400, 500, 700,
-                                  1000, 1500, 2000, 3000),
-                         minor_breaks=c()) +
+
+      # Log scale
+      #scale_y_continuous(trans='log10', limits=c(max(20, min(subset$Unused)), min(2000, max(subset$Unused))),
+      #                   breaks=c(1, 2, 3, 5, 7,
+      #                            10, 15, 20, 30, 40, 50, 70,
+      #                            100, 150, 200, 300, 400, 500, 700,
+      #                            1000, 1500, 2000, 3000),
+      #                   minor_breaks=c()) +
+
+      # Linear scale
+      scale_y_continuous(limits=c(max(20, min(subset$Unused)), min(2000, max(subset$Unused)))) +
       theme_bw() +
       theme(legend.key.width = unit(2, "cm"))
 dev.off()
