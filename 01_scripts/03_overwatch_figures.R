@@ -15,7 +15,7 @@ output_file = args[2]
 
 # Global variables
 num_users = 12
-min_value = 1
+min_value = 8
 max_value = 2000
 
 # Read data
@@ -50,7 +50,7 @@ subset = ram_usage[ram_usage$User %in% wanted_users$User, ]
 # Produce figure
 pdf(output_file, width=18, height=6)
 ggplot(subset, aes(x=Time, y=Unused, group=Usergroup, color=User)) + #, linetype=User)) +
-    geom_line(linewidth=1.2, alpha=0.7) +
+    geom_line(linewidth=1.2, alpha=0.8) +
     xlab("Time") +
     ylab("BETTER   <-----------      Unused RAM in Gb      ----------->   WORSE") +
 
