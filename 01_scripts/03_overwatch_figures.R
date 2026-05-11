@@ -56,7 +56,8 @@ ggplot(subset, aes(x=Time, y=Unused, group=Usergroup, color=User)) + #, linetype
 
     # Log scale
     scale_y_continuous(trans='log10',
-                       limits=c(max(min_value, min(subset$Unused)),
+                       #limits=c(max(min_value, min(subset$Unused)),
+                       limits=c(min_value,
                                 min(max_value, max(subset$Unused))),
                        breaks=c(
                                 10, 15, 20, 30, 40, 50, 70,
